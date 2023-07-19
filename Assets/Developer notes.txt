@@ -1,0 +1,5 @@
+1 - Use lots of interfaces inside your Character script
+
+2 - In Character script: Contain data with help of Scriptable objects.
+
+3 - Create static Helpers class for Control data inside Character script

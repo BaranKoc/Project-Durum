@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10a3e5b150afdaa49ab2cfac6051e123, type: 3}
+  m_Name: Basic Gun
+  m_EditorClassIdentifier: 
+  playerCtrl: {fileID: 0}
+  DEFAULT_Tab_AttackDamage: 0
+  DEFAULT_Tab_AttackCooldown: 0
+  DEFAULT_Tab_AttackCost: 0
+  DEFAULT_Tab_Ammo: 0
+  DEFAULT_Tab_ReloadSpeed: 0
+  CURRENT_Tab_AttackDamage: 0
+  CURRENT_Tab_AttackCooldown: 0
+  CURRENT_Tab_AttackCost: 0
+  CURRENT_Tab_Ammo: 0
+  CURRENT_Tab_ReloadSpeed: 0
+  DEFAULT_MultiTab_AttackDamage: 0
+  DEFAULT_MultiTab_AttackCooldown: 0
+  DEFAULT_MultiTab_AttackCost: 0
+  DEFAULT_MultiTab_Ammo: 0
+  DEFAULT_MultiTab_ReloadSpeed: 0
+  CURRENT_MultiTab_AttackDamage: 0
+  CURRENT_MultiTab_AttackCooldown: 0
+  CURRENT_MultiTab_AttackCost: 0
+  CURRENT_MultiTab_Ammo: 0
+  CURRENT_MultiTab_ReloadSpeed: 0
+  DEFAULT_Hold_AttackDamage: 0
+  DEFAULT_Hold_AttackCooldown: 0
+  DEFAULT_Hold_AttackCost: 0
+  DEFAULT_Hold_Ammo: 0
+  DEFAULT_Hold_ReloadSpeed: 0
+  CURRENT_Hold_AttackDamage: 0
+  CURRENT_Hold_AttackCooldown: 0
+  CURRENT_Hold_AttackCost: 0
+  CURRENT_Hold_Ammo: 0
+  CURRENT_Hold_ReloadSpeed: 0
+  DEFAULT_SlowTab_AttackDamage: 0
+  DEFAULT_SlowTab_AttackCooldown: 0
+  DEFAULT_SlowTab_AttackCost: 0
+  DEFAULT_SlowTab_Ammo: 0
+  DEFAULT_SlowTab_ReloadSpeed: 0
+  CURRENT_SlowTab_AttackDamage: 0
+  CURRENT_SlowTab_AttackCooldown: 0
+  CURRENT_SlowTab_AttackCost: 0
+  CURRENT_SlowTab_Ammo: 0
+  CURRENT_SlowTab_ReloadSpeed: 0
+  TabBulletPrefab: {fileID: 2897544526243096974, guid: 8cdc59d25d345704cb03ba5ff102d174, type: 3}
+  MultiTabBulletPrefab: {fileID: 7067255268889861167, guid: 8db0150c50bdbf948b608aad7d0206e7, type: 3}
+  SlowTabBulletPrefab: {fileID: 2747063597404787069, guid: 9e2ddbd892c9f2a4c95b9f0d9e423c98, type: 3}
+  HoldBulletPrefab: {fileID: 3610711716224996734, guid: 0b186960de622594281df44b17457f66, type: 3}
