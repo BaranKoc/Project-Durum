@@ -25,9 +25,7 @@ public class PlayerData : CharacterData
     [HideInInspector] public float CURRENT_flip_Cooldown;
 
 
-    [Header("Weapon Settings")]
-    public Weapon Weapon1;
-    public Weapon Weapon2;
+  // [Header("Weapon Settings")]
 
 
     //================================================================
@@ -50,23 +48,10 @@ public class PlayerData : CharacterData
         CURRENT_flip_speed = DEFAULT_flip_Speed;
         CURRENT_flip_time = DEFAULT_flip_Time;
         CURRENT_flip_Cooldown = DEFAULT_flip_Cooldown;
-
-        ActivateWeapon1();
     }
-
-
     //================================================================
     /*´:°•.°+.*•´.*:˚.°*.˚•´.°:°•.°•.*•´.*:˚.°*.˚•´.°:°•.°+.*•´.*:*/
     /*                      Inventory Field                       */
     /*.•°:°.´+˚.*°.˚:*.´•*.+°.•°:´*.´•*.•°.•°:°.´:•˚°.*°.˚:*.´+°.•*/
     //================================================================    
-
-    private void ActivateWeapon1()
-    {
-        Weapon1.playerCtrl = playerCtrl;
-    }
-    private void ActivateWeapon2()
-    {
-        Weapon2.playerCtrl = playerCtrl;
-    }
 }

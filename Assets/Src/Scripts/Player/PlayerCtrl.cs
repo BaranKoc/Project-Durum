@@ -21,7 +21,6 @@ public class PlayerCtrl : MonoBehaviour
     public Transform firingPoint;
 
 
-
     //================================================================
     /*´:°•.°+.*•´.*:˚.°*.˚•´.°:°•.°•.*•´.*:˚.°*.˚•´.°:°•.°+.*•´.*:*/
     /*                        SETUP FIELD                         */
@@ -49,14 +48,6 @@ public class PlayerCtrl : MonoBehaviour
 
         playerInputActions.Player.Dash.performed += PerformedDash;
         playerInputActions.Player.Dash.canceled += CancelledDash;
-
-        playerInputActions.Player.Attack1.started += playerData.Weapon1.StartedAttack;
-        playerInputActions.Player.Attack1.performed += playerData.Weapon1.PerformedAttack;
-        playerInputActions.Player.Attack1.canceled += playerData.Weapon1.CancelledAttack;
-
-        playerInputActions.Player.Attack2.started += playerData.Weapon1.StartedAttack;
-        playerInputActions.Player.Attack2.performed += playerData.Weapon1.PerformedAttack;
-        playerInputActions.Player.Attack2.canceled += playerData.Weapon1.CancelledAttack;
     }
 
     private void OnDisable()
@@ -68,14 +59,6 @@ public class PlayerCtrl : MonoBehaviour
 
         playerInputActions.Player.Dash.performed -= PerformedDash;
         playerInputActions.Player.Dash.canceled -= CancelledDash;
-
-        playerInputActions.Player.Attack1.started += playerData.Weapon1.StartedAttack;
-        playerInputActions.Player.Attack1.performed -= playerData.Weapon1.PerformedAttack;
-        playerInputActions.Player.Attack1.canceled -= playerData.Weapon1.CancelledAttack;
-
-        playerInputActions.Player.Attack2.started -= playerData.Weapon1.StartedAttack;
-        playerInputActions.Player.Attack2.performed -= playerData.Weapon1.PerformedAttack;
-        playerInputActions.Player.Attack2.canceled -= playerData.Weapon1.CancelledAttack;
     }
 
 
@@ -210,13 +193,15 @@ public class PlayerCtrl : MonoBehaviour
     /*                       ATTACK1 FIELD                        */
     /*.•°:°.´+˚.*°.˚:*.´•*.+°.•°:´*.´•*.•°.•°:°.´:•˚°.*°.˚:*.´+°.•*/
     //================================================================
-    
+    [HideInInspector] public input_state ATTACK1_current_input = input_state.Empty;
+
+
     
     //================================================================
     /*´:°•.°+.*•´.*:˚.°*.˚•´.°:°•.°•.*•´.*:˚.°*.˚•´.°:°•.°+.*•´.*:*/
     /*                       ATTACK2 FIELD                        */
     /*.•°:°.´+˚.*°.˚:*.´•*.+°.•°:´*.´•*.•°.•°:°.´:•˚°.*°.˚:*.´+°.•*/
     //================================================================
-
+    [HideInInspector] public input_state ATTACK2_current_input = input_state.Empty;
     
 }
