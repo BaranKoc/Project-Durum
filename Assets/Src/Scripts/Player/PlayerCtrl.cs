@@ -22,7 +22,7 @@ public class PlayerCtrl : MonoBehaviour
 
 
     private GameObject Inventory;
-    private WeaponsComponent weaponsComponent;
+    private InventoryWeapon weaponsComponent;
     private WeaponComponent PrimaryWeaponComponent;
     private WeaponComponent SecondaryWeaponComponent;
 
@@ -47,7 +47,7 @@ public class PlayerCtrl : MonoBehaviour
 
         Inventory = transform.Find("Inventory").gameObject; 
 
-        if (Inventory != null) weaponsComponent = Inventory.GetComponent<WeaponsComponent>();
+        if (Inventory != null) weaponsComponent = Inventory.GetComponent<InventoryWeapon>();
         if (weaponsComponent != null)
         {
             if (weaponsComponent.PrimaryWeaponComponent != null)   {PrimaryWeaponComponent = weaponsComponent.PrimaryWeaponComponent;} 

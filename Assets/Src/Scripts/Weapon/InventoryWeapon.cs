@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponsComponent : MonoBehaviour
+public class InventoryWeapon : MonoBehaviour
 {
     public GameObject PrimaryWeapon;
     [HideInInspector] public WeaponComponent PrimaryWeaponComponent;
