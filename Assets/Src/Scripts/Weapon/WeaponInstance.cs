@@ -1,18 +1,60 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Interactions;
 
-public class WeaponInstance : MonoBehaviour
+public class WeaponInstance : MonoBehaviour, IWeaponInstance
 {
-    // Start is called before the first frame update
-    void Start()
+    //================================================================
+    /*´:°•.°+.*•´.*:˚.°*.˚•´.°:°•.°•.*•´.*:˚.°*.˚•´.°:°•.°+.*•´.*:*/
+    /*                     INTERACTION FIELD                      */
+    /*.•°:°.´+˚.*°.˚:*.´•*.+°.•°:´*.´•*.•°.•°:°.´:•˚°.*°.˚:*.´+°.•*/
+    //================================================================
+    
+    public void UpdateCurrentInputState(AttackInput input)
     {
-        
+        current_input = input;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void UpdateLastInputState()
     {
-        
+        last_input = current_input;
     }
+
+    public virtual void whenMultiTab(){}
+    public virtual void whenPress(){}
+    public virtual void whenTab(){}
+    public virtual void whenSlowTab(){}
+    public virtual void whenHold(){}
+
+
+
+    //================================================================
+    /*´:°•.°+.*•´.*:˚.°*.˚•´.°:°•.°•.*•´.*:˚.°*.˚•´.°:°•.°+.*•´.*:*/
+    /*                         Variables                          */
+    /*.•°:°.´+˚.*°.˚:*.´•*.+°.•°:´*.´•*.•°.•°:°.´:•˚°.*°.˚:*.´+°.•*/
+    //================================================================
+
+    private bool _auto_tab;
+    public bool auto_tab 
+    {
+        get { return _auto_tab; }
+        set{ _auto_tab = value; }
+    }
+
+    private AttackInput _last_input;
+    public AttackInput last_input 
+    {
+        get { return _last_input; } 
+        set {_last_input = value; }
+    }
+
+    private AttackInput _current_input;
+    public AttackInput current_input 
+    {
+        get { return _current_input; } 
+        set {_current_input = value; }
+    }
+
 }

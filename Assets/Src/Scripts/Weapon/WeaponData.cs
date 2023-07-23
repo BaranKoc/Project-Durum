@@ -1,18 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor.UIElements;
+using UnityEngine.UIElements;
 
 public class WeaponData : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public string WeaponName;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [TextAreaAttribute]
+    public string description;
+
+    public WeaponType weaponType;
+    public GripType gripType;
 }

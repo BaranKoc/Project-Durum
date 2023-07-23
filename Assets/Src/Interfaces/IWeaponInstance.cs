@@ -2,10 +2,8 @@
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 
-public enum input_state { Tab, MultiTab, SlowTab, Hold, Empty}
 
-
-interface IWeapon
+interface IWeaponInstance
 {
     //================================================================
     /*´:°•.°+.*•´.*:˚.°*.˚•´.°:°•.°•.*•´.*:˚.°*.˚•´.°:°•.°+.*•´.*:*/
@@ -16,8 +14,8 @@ interface IWeapon
     bool auto_tab {get; set;}
 
     
-    input_state last_input {get; set;}
-    input_state current_input {get; set;}
+    AttackInput last_input {get; set;}
+    AttackInput current_input {get; set;}
 
 
     //================================================================
@@ -25,13 +23,12 @@ interface IWeapon
     /*                     INTERACTION FIELD                      */
     /*.•°:°.´+˚.*°.˚:*.´•*.+°.•°:´*.´•*.•°.•°:°.´:•˚°.*°.˚:*.´+°.•*/
     //================================================================
+    void UpdateCurrentInputState(AttackInput input);
 
-    void StartedAttack(InputAction.CallbackContext input);
+    void UpdateLastInputState();
+    
 
-    void PerformedAttack(InputAction.CallbackContext input);
-
-    void CancelledAttack(InputAction.CallbackContext input);
-
+    void whenPress();
     void whenMultiTab();
     void whenTab();
     void whenSlowTab();

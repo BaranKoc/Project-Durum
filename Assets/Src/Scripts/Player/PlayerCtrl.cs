@@ -21,6 +21,12 @@ public class PlayerCtrl : MonoBehaviour
     public Transform firingPoint;
 
 
+    private GameObject Inventory;
+    private WeaponsComponent weaponsComponent;
+    private WeaponComponent PrimaryWeaponComponent;
+    private WeaponComponent SecondaryWeaponComponent;
+
+
     //================================================================
     /*´:°•.°+.*•´.*:˚.°*.˚•´.°:°•.°•.*•´.*:˚.°*.˚•´.°:°•.°+.*•´.*:*/
     /*                        SETUP FIELD                         */
@@ -29,14 +35,24 @@ public class PlayerCtrl : MonoBehaviour
 
     private void Awake()
     {
-        if (rb == null) rb = GetComponent<Rigidbody2D>();
-        if (tr == null) tr = GetComponent<TrailRenderer>();
+        rb = GetComponent<Rigidbody2D>();
+        tr = GetComponent<TrailRenderer>();
 
-        if (playerData == null) playerData = GetComponent<PlayerData>();
+        playerData = GetComponent<PlayerData>();
 
-        if (playerAnimation == null)  playerAnimation = new PlayerAnimation(GetComponent<Animator>(), transform);
+        playerAnimation = new PlayerAnimation(GetComponent<Animator>(), transform);
 
-        if (playerInputActions == null) playerInputActions = new PlayerInputActions();
+        playerInputActions = new PlayerInputActions();
+
+
+        Inventory = transform.Find("Inventory").gameObject; 
+
+        if (Inventory != null) weaponsComponent = Inventory.GetComponent<WeaponsComponent>();
+        if (weaponsComponent != null)
+        {
+            if (weaponsComponent.PrimaryWeaponComponent != null)   {PrimaryWeaponComponent = weaponsComponent.PrimaryWeaponComponent;} 
+            if (weaponsComponent.SecondaryWeaponComponent != null) {SecondaryWeaponComponent = weaponsComponent.SecondaryWeaponComponent;} 
+        }
     }
 
     private void OnEnable()
@@ -48,6 +64,10 @@ public class PlayerCtrl : MonoBehaviour
 
         playerInputActions.Player.Dash.performed += PerformedDash;
         playerInputActions.Player.Dash.canceled += CancelledDash;
+
+        playerInputActions.Player.PrimaryWeapon.started += PrimaryWeaponStarted;
+        playerInputActions.Player.PrimaryWeapon.performed += PrimaryWeaponPerformed;
+        playerInputActions.Player.PrimaryWeapon.canceled += PrimaryWeaponCancelled;
     }
 
     private void OnDisable()
@@ -60,6 +80,8 @@ public class PlayerCtrl : MonoBehaviour
         playerInputActions.Player.Dash.performed -= PerformedDash;
         playerInputActions.Player.Dash.canceled -= CancelledDash;
     }
+
+
 
 
 
@@ -188,12 +210,101 @@ public class PlayerCtrl : MonoBehaviour
     }
 
 
+
+
     //================================================================
     /*´:°•.°+.*•´.*:˚.°*.˚•´.°:°•.°•.*•´.*:˚.°*.˚•´.°:°•.°+.*•´.*:*/
-    /*                       ATTACK1 FIELD                        */
+    /*                       PRIMARY WEAPON                       */
     /*.•°:°.´+˚.*°.˚:*.´•*.+°.•°:´*.´•*.•°.•°:°.´:•˚°.*°.˚:*.´+°.•*/
     //================================================================
-    [HideInInspector] public input_state ATTACK1_current_input = input_state.Empty;
+    [HideInInspector] public AttackInput ATTACK1_current_input = AttackInput.Empty;
+    
+    private void PrimaryWeaponStarted(InputAction.CallbackContext input)
+    {
+        switch (InputHandler.StartedAttackInput(input))
+        {
+            case AttackInput.Empty:
+                break;
+            
+            case AttackInput.Press:
+                Debug.Log("PrimaryWeaponStarted: Press");
+                break;
+
+            case AttackInput.Tab:
+                Debug.Log("PrimaryWeaponStarted: Tab");
+                break;
+
+            case AttackInput.MultiTab:
+                Debug.Log("PrimaryWeaponStarted: MultiTab");
+                break;
+            
+            case AttackInput.SlowTab:
+                Debug.Log("PrimaryWeaponStarted: SlowTab");
+                break;
+            
+            case AttackInput.Hold:
+                Debug.Log("PrimaryWeaponStarted: Hold");
+                break;
+        }
+    }
+
+    private void PrimaryWeaponPerformed(InputAction.CallbackContext input)
+    {
+        switch (InputHandler.PerformedAttackInput(input))
+        {
+            case AttackInput.Empty:
+                break;
+            
+            case AttackInput.Press:
+                Debug.Log("PrimaryWeaponPerformed: Press");
+                break;
+
+            case AttackInput.Tab:
+                Debug.Log("PrimaryWeaponPerformed: Tab");
+                break;
+
+            case AttackInput.MultiTab:
+                Debug.Log("PrimaryWeaponPerformed: MultiTab");
+                break;
+            
+            case AttackInput.SlowTab:
+                Debug.Log("PrimaryWeaponPerformed: SlowTab");
+                break;
+            
+            case AttackInput.Hold:
+                Debug.Log("PrimaryWeaponPerformed: Hold");
+                break;
+        }
+    }
+
+    private void PrimaryWeaponCancelled(InputAction.CallbackContext input)
+    {
+        switch (InputHandler.CancelledAttackInput(input))
+        {
+            case AttackInput.Empty:
+                break;
+            
+            case AttackInput.Press:
+                Debug.Log("PrimaryWeaponCancelled: Press");
+                break;
+
+            case AttackInput.Tab:
+                Debug.Log("PrimaryWeaponCancelled: Tab");
+                break;
+
+            case AttackInput.MultiTab:
+                Debug.Log("PrimaryWeaponCancelled: MultiTab");
+                break;
+            
+            case AttackInput.SlowTab:
+                Debug.Log("PrimaryWeaponCancelled: SlowTab");
+                break;
+            
+            case AttackInput.Hold:
+                Debug.Log("PrimaryWeaponCancelled: Hold");
+                break;
+        }
+    }
 
 
     
@@ -202,6 +313,6 @@ public class PlayerCtrl : MonoBehaviour
     /*                       ATTACK2 FIELD                        */
     /*.•°:°.´+˚.*°.˚:*.´•*.+°.•°:´*.´•*.•°.•°:°.´:•˚°.*°.˚:*.´+°.•*/
     //================================================================
-    [HideInInspector] public input_state ATTACK2_current_input = input_state.Empty;
+    [HideInInspector] public AttackInput ATTACK2_current_input = AttackInput.Empty;
     
 }
