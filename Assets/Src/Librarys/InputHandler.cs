@@ -5,8 +5,10 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 
 
-public static class InputHandler
+public class InputHandler
 {
+    private Time lastTabTime;
+
     public static AttackInput StartedAttackInput(InputAction.CallbackContext input)
     {
         if (input.interaction is SlowTapInteraction)
@@ -14,29 +16,16 @@ public static class InputHandler
             return AttackInput.Hold;
         }
         
-        if (input.interaction is TapInteraction)
-        {
-            return AttackInput.Empty;
-        }
-
-        else
-        {
-            return AttackInput.Press;
-        }
+        return AttackInput.Press;
     }
 
     public static AttackInput PerformedAttackInput(InputAction.CallbackContext input)
     {
-        if (input.interaction is MultiTapInteraction)
-        {
-            return AttackInput.MultiTab;
-        }  
-
         if (input.interaction is TapInteraction)
         {
             return AttackInput.Tab;
         }
-
+        
         if (input.interaction is SlowTapInteraction)
         {
             return AttackInput.SlowTab;
@@ -49,7 +38,7 @@ public static class InputHandler
     }
 
     public static AttackInput CancelledAttackInput(InputAction.CallbackContext input)
-    {
+    {        
         return AttackInput.Empty;
     }
 }

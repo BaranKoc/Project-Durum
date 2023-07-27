@@ -11,9 +11,6 @@ interface IWeaponInstance
     /*.•°:°.´+˚.*°.˚:*.´•*.+°.•°:´*.´•*.•°.•°:°.´:•˚°.*°.˚:*.´+°.•*/
     //================================================================
     
-    bool auto_tab {get; set;}
-
-    
     AttackInput last_input {get; set;}
     AttackInput current_input {get; set;}
 

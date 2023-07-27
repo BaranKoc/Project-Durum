@@ -23,7 +23,7 @@ public class PlayerCtrl : MonoBehaviour
 
     private GameObject Inventory;
     
-    private InventoryWeapon inventoryWeapon;
+    private WeaponInventory weaponInventory;
     private WeaponComponent PrimaryWeaponComponent;
     private WeaponComponent SecondaryWeaponComponent;
 
@@ -47,13 +47,10 @@ public class PlayerCtrl : MonoBehaviour
 
 
         Inventory = transform.Find("Inventory").gameObject; 
-
-        if (Inventory != null) inventoryWeapon = Inventory.GetComponent<InventoryWeapon>();
-        if (inventoryWeapon != null)
-        {
-            if (inventoryWeapon.PrimaryWeaponComponent != null)   {PrimaryWeaponComponent = inventoryWeapon.PrimaryWeaponComponent;} 
-            if (inventoryWeapon.SecondaryWeaponComponent != null) {SecondaryWeaponComponent = inventoryWeapon.SecondaryWeaponComponent;} 
-        }
+        weaponInventory = Inventory.GetComponent<WeaponInventory>();
+        
+        PrimaryWeaponComponent = weaponInventory.getPrimaryWeaponComponent();
+        SecondaryWeaponComponent = weaponInventory.getSecondaryWeaponComponent();
     }
 
     private void OnEnable()
@@ -80,6 +77,10 @@ public class PlayerCtrl : MonoBehaviour
 
         playerInputActions.Player.Dash.performed -= PerformedDash;
         playerInputActions.Player.Dash.canceled -= CancelledDash;
+        
+        playerInputActions.Player.PrimaryWeapon.started -= PrimaryWeaponStarted;
+        playerInputActions.Player.PrimaryWeapon.performed -= PrimaryWeaponPerformed;
+        playerInputActions.Player.PrimaryWeapon.canceled -= PrimaryWeaponCancelled;
     }
 
 
@@ -218,8 +219,7 @@ public class PlayerCtrl : MonoBehaviour
     /*                       PRIMARY WEAPON                       */
     /*.•°:°.´+˚.*°.˚:*.´•*.+°.•°:´*.´•*.•°.•°:°.´:•˚°.*°.˚:*.´+°.•*/
     //================================================================
-    [HideInInspector] public AttackInput ATTACK1_current_input = AttackInput.Empty;
-    
+
     private void PrimaryWeaponStarted(InputAction.CallbackContext input)
     {
         switch (InputHandler.StartedAttackInput(input))
@@ -228,23 +228,23 @@ public class PlayerCtrl : MonoBehaviour
                 break;
             
             case AttackInput.Press:
-                Debug.Log("PrimaryWeaponStarted: Press");
+                PrimaryWeaponComponent.weaponInstance.whenPress();
                 break;
 
             case AttackInput.Tab:
-                Debug.Log("PrimaryWeaponStarted: Tab");
+                PrimaryWeaponComponent.weaponInstance.whenTab();
                 break;
 
             case AttackInput.MultiTab:
-                Debug.Log("PrimaryWeaponStarted: MultiTab");
+                PrimaryWeaponComponent.weaponInstance.whenMultiTab();
                 break;
             
             case AttackInput.SlowTab:
-                Debug.Log("PrimaryWeaponStarted: SlowTab");
+                PrimaryWeaponComponent.weaponInstance.whenSlowTab();
                 break;
             
             case AttackInput.Hold:
-                Debug.Log("PrimaryWeaponStarted: Hold");
+                PrimaryWeaponComponent.weaponInstance.whenHold();
                 break;
         }
     }
@@ -257,23 +257,23 @@ public class PlayerCtrl : MonoBehaviour
                 break;
             
             case AttackInput.Press:
-                Debug.Log("PrimaryWeaponPerformed: Press");
+                PrimaryWeaponComponent.weaponInstance.whenPress();
                 break;
 
             case AttackInput.Tab:
-                Debug.Log("PrimaryWeaponPerformed: Tab");
+                PrimaryWeaponComponent.weaponInstance.whenTab();
                 break;
 
             case AttackInput.MultiTab:
-                Debug.Log("PrimaryWeaponPerformed: MultiTab");
+                PrimaryWeaponComponent.weaponInstance.whenMultiTab();
                 break;
             
             case AttackInput.SlowTab:
-                Debug.Log("PrimaryWeaponPerformed: SlowTab");
+                PrimaryWeaponComponent.weaponInstance.whenSlowTab();
                 break;
             
             case AttackInput.Hold:
-                Debug.Log("PrimaryWeaponPerformed: Hold");
+                PrimaryWeaponComponent.weaponInstance.whenHold();
                 break;
         }
     }
@@ -286,23 +286,23 @@ public class PlayerCtrl : MonoBehaviour
                 break;
             
             case AttackInput.Press:
-                Debug.Log("PrimaryWeaponCancelled: Press");
+                PrimaryWeaponComponent.weaponInstance.whenPress();
                 break;
 
             case AttackInput.Tab:
-                Debug.Log("PrimaryWeaponCancelled: Tab");
+                PrimaryWeaponComponent.weaponInstance.whenTab();
                 break;
 
             case AttackInput.MultiTab:
-                Debug.Log("PrimaryWeaponCancelled: MultiTab");
+                PrimaryWeaponComponent.weaponInstance.whenMultiTab();
                 break;
             
             case AttackInput.SlowTab:
-                Debug.Log("PrimaryWeaponCancelled: SlowTab");
+                PrimaryWeaponComponent.weaponInstance.whenSlowTab();
                 break;
             
             case AttackInput.Hold:
-                Debug.Log("PrimaryWeaponCancelled: Hold");
+                PrimaryWeaponComponent.weaponInstance.whenHold();
                 break;
         }
     }
@@ -314,6 +314,6 @@ public class PlayerCtrl : MonoBehaviour
     /*                       ATTACK2 FIELD                        */
     /*.•°:°.´+˚.*°.˚:*.´•*.+°.•°:´*.´•*.•°.•°:°.´:•˚°.*°.˚:*.´+°.•*/
     //================================================================
-    [HideInInspector] public AttackInput ATTACK2_current_input = AttackInput.Empty;
+
     
 }

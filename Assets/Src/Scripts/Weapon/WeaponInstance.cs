@@ -36,13 +36,6 @@ public class WeaponInstance : MonoBehaviour, IWeaponInstance
     /*.•°:°.´+˚.*°.˚:*.´•*.+°.•°:´*.´•*.•°.•°:°.´:•˚°.*°.˚:*.´+°.•*/
     //================================================================
 
-    private bool _auto_tab;
-    public bool auto_tab 
-    {
-        get { return _auto_tab; }
-        set{ _auto_tab = value; }
-    }
-
     private AttackInput _last_input;
     public AttackInput last_input 
     {

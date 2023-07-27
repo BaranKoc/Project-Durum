@@ -29,8 +29,8 @@
                     "id": "f6ba3b67-86ff-4972-96c5-635c95381869",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "MultiTap,SlowTap,Tap",
-                    "initialStateCheck": false
+                    "interactions": "Tap,SlowTap(duration=0.2)",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "SecondaryWeapon",
