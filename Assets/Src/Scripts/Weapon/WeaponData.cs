@@ -6,6 +6,9 @@ using UnityEngine.UIElements;
 
 public class WeaponData : MonoBehaviour
 {
+    public Transform firingPoint;
+
+    
     public string WeaponName;
 
     [TextAreaAttribute]

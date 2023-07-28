@@ -35,7 +35,14 @@ public class WeaponInstance : MonoBehaviour, IWeaponInstance
     /*                         Variables                          */
     /*.•°:°.´+˚.*°.˚:*.´•*.+°.•°:´*.´•*.•°.•°:°.´:•˚°.*°.˚:*.´+°.•*/
     //================================================================
+    [HideInInspector] public PlayerCtrl playerCtrl;
 
+    public void init(PlayerCtrl _playerCtrl)
+    {
+        playerCtrl = _playerCtrl;
+    }
+
+    
     private AttackInput _last_input;
     public AttackInput last_input 
     {

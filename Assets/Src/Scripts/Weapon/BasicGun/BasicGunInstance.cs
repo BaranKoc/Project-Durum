@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class BasicGunInstance : WeaponInstance
 {
+
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private float firerate = 0.5f;
+
     public override void whenMultiTab()
     {
         Debug.Log("MultiTab");
@@ -11,6 +15,7 @@ public class BasicGunInstance : WeaponInstance
     public override void whenPress()
     {
         Debug.Log("Press");
+        ShootPress();
     }
     public override void whenTab()
     {
@@ -24,4 +29,12 @@ public class BasicGunInstance : WeaponInstance
     {
         Debug.Log("Hold");
     }
+
+
+    public void ShootPress()
+    {   
+        Debug.Log(playerCtrl.firingPoint);
+        Instantiate(bulletPrefab, playerCtrl.firingPoint.position, playerCtrl.firingPoint.rotation);
+    }
+
 }

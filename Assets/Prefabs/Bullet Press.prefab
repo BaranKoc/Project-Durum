@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2897544526243096970}
   - component: {fileID: 2897544526243096969}
   - component: {fileID: 2897544526243096968}
+  - component: {fileID: -4556449576866865772}
   m_Layer: 0
   m_Name: Bullet Press
   m_TagString: Untagged
@@ -123,3 +124,17 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &-4556449576866865772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2897544526243096974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f859d469afc41464ba168bce4b65d9ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 20
+  lifeTime: 2.72

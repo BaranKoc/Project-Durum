@@ -21,11 +21,15 @@ public class PlayerCtrl : MonoBehaviour
     public Transform firingPoint;
 
 
-    private GameObject Inventory;
+    private GameObject InventoryGameObject;
+    private InventoryComponent Inventory;
     
-    private WeaponInventory weaponInventory;
-    private WeaponComponent PrimaryWeaponComponent;
-    private WeaponComponent SecondaryWeaponComponent;
+    [HideInInspector] public WeaponComponent PrimaryWeaponComponent;
+    [HideInInspector] public WeaponInstance PrimaryWeaponInstance;
+
+    [HideInInspector] public WeaponComponent SecondaryWeaponComponent;
+    [HideInInspector] public WeaponInstance SecondaryWeaponInstance;
+    
 
 
     //================================================================
@@ -33,7 +37,6 @@ public class PlayerCtrl : MonoBehaviour
     /*                        SETUP FIELD                         */
     /*.•°:°.´+˚.*°.˚:*.´•*.+°.•°:´*.´•*.•°.•°:°.´:•˚°.*°.˚:*.´+°.•*/
     //================================================================
-
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -46,11 +49,12 @@ public class PlayerCtrl : MonoBehaviour
         playerInputActions = new PlayerInputActions();
 
 
-        Inventory = transform.Find("Inventory").gameObject; 
-        weaponInventory = Inventory.GetComponent<WeaponInventory>();
+        InventoryGameObject = transform.Find("Inventory").gameObject; 
+        Inventory = InventoryGameObject.GetComponent<InventoryComponent>();
         
-        PrimaryWeaponComponent = weaponInventory.getPrimaryWeaponComponent();
-        SecondaryWeaponComponent = weaponInventory.getSecondaryWeaponComponent();
+        Inventory.init(this);
+        Inventory.UpdatePrimaryWeapon();
+        Inventory.UpdateSecondaryWeapon();
     }
 
     private void OnEnable()
@@ -214,6 +218,31 @@ public class PlayerCtrl : MonoBehaviour
 
 
 
+
+
+    //================================================================
+    /*´:°•.°+.*•´.*:˚.°*.˚•´.°:°•.°•.*•´.*:˚.°*.˚•´.°:°•.°+.*•´.*:*/
+    /*                      Inventory Field                       */
+    /*.•°:°.´+˚.*°.˚:*.´•*.+°.•°:´*.´•*.•°.•°:°.´:•˚°.*°.˚:*.´+°.•*/
+    //================================================================
+
+    public void setPrimaryWeapon(WeaponComponent _WeaponComponent, WeaponInstance _WeaponInstance)
+    {
+        PrimaryWeaponComponent = _WeaponComponent;
+        PrimaryWeaponInstance = _WeaponInstance;
+    }
+
+
+    public void setSecondaryWeapon(WeaponComponent _WeaponComponent, WeaponInstance _WeaponInstance)
+    {
+        SecondaryWeaponComponent = _WeaponComponent;
+        SecondaryWeaponInstance = _WeaponInstance;
+    }
+
+
+
+
+
     //================================================================
     /*´:°•.°+.*•´.*:˚.°*.˚•´.°:°•.°•.*•´.*:˚.°*.˚•´.°:°•.°+.*•´.*:*/
     /*                       PRIMARY WEAPON                       */
@@ -228,23 +257,23 @@ public class PlayerCtrl : MonoBehaviour
                 break;
             
             case AttackInput.Press:
-                PrimaryWeaponComponent.weaponInstance.whenPress();
+                PrimaryWeaponInstance.whenPress();
                 break;
 
             case AttackInput.Tab:
-                PrimaryWeaponComponent.weaponInstance.whenTab();
+                PrimaryWeaponInstance.whenTab();
                 break;
 
             case AttackInput.MultiTab:
-                PrimaryWeaponComponent.weaponInstance.whenMultiTab();
+                PrimaryWeaponInstance.whenMultiTab();
                 break;
             
             case AttackInput.SlowTab:
-                PrimaryWeaponComponent.weaponInstance.whenSlowTab();
+                PrimaryWeaponInstance.whenSlowTab();
                 break;
             
             case AttackInput.Hold:
-                PrimaryWeaponComponent.weaponInstance.whenHold();
+                PrimaryWeaponInstance.whenHold();
                 break;
         }
     }
@@ -257,23 +286,23 @@ public class PlayerCtrl : MonoBehaviour
                 break;
             
             case AttackInput.Press:
-                PrimaryWeaponComponent.weaponInstance.whenPress();
+                PrimaryWeaponInstance.whenPress();
                 break;
 
             case AttackInput.Tab:
-                PrimaryWeaponComponent.weaponInstance.whenTab();
+                PrimaryWeaponInstance.whenTab();
                 break;
 
             case AttackInput.MultiTab:
-                PrimaryWeaponComponent.weaponInstance.whenMultiTab();
+                PrimaryWeaponInstance.whenMultiTab();
                 break;
             
             case AttackInput.SlowTab:
-                PrimaryWeaponComponent.weaponInstance.whenSlowTab();
+                PrimaryWeaponInstance.whenSlowTab();
                 break;
             
             case AttackInput.Hold:
-                PrimaryWeaponComponent.weaponInstance.whenHold();
+                PrimaryWeaponInstance.whenHold();
                 break;
         }
     }
@@ -286,23 +315,23 @@ public class PlayerCtrl : MonoBehaviour
                 break;
             
             case AttackInput.Press:
-                PrimaryWeaponComponent.weaponInstance.whenPress();
+                PrimaryWeaponInstance.whenPress();
                 break;
 
             case AttackInput.Tab:
-                PrimaryWeaponComponent.weaponInstance.whenTab();
+                PrimaryWeaponInstance.whenTab();
                 break;
 
             case AttackInput.MultiTab:
-                PrimaryWeaponComponent.weaponInstance.whenMultiTab();
+                PrimaryWeaponInstance.whenMultiTab();
                 break;
             
             case AttackInput.SlowTab:
-                PrimaryWeaponComponent.weaponInstance.whenSlowTab();
+                PrimaryWeaponInstance.whenSlowTab();
                 break;
             
             case AttackInput.Hold:
-                PrimaryWeaponComponent.weaponInstance.whenHold();
+                PrimaryWeaponInstance.whenHold();
                 break;
         }
     }

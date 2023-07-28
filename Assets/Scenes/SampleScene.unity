@@ -250,8 +250,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 441539236}
   - {fileID: 1521198569}
+  - {fileID: 441539236}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
@@ -407,12 +407,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firingPoint: {fileID: 1521198569}
+  PrimaryWeaponComponent: {fileID: 0}
+  PrimaryWeaponInstance: {fileID: 0}
+  SecondaryWeaponComponent: {fileID: 0}
+  SecondaryWeaponInstance: {fileID: 0}
   _movementInput: {x: 0, y: 0}
   is_walking: 0
   direction_dash: {x: 0, y: 0}
   is_dashing: 0
   can_dash: 1
-  ATTACK2_current_input: 4
 --- !u!1 &441539235
 GameObject:
   m_ObjectHideFlags: 0
@@ -444,7 +447,7 @@ Transform:
   m_Children:
   - {fileID: 1578361774}
   m_Father: {fileID: 110377286}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &441539237
 MonoBehaviour:
@@ -460,7 +463,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PrimaryWeapon: {fileID: 1578361773}
   PrimaryWeaponComponent: {fileID: 0}
-  SecondaryWeapon: {fileID: 0}
+  SecondaryWeapon: {fileID: 1578361773}
   SecondaryWeaponComponent: {fileID: 0}
 --- !u!1 &779529538
 GameObject:
@@ -762,7 +765,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 110377286}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
 --- !u!1 &1578361773
 GameObject:
@@ -1170,6 +1173,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 879782603d4cec54b89b7c7c39f6c426, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerCtrl: {fileID: 0}
+  bulletPrefab: {fileID: 2897544526243096974, guid: 28161f36484bd9144984286d1daa8ec3, type: 3}
+  firerate: 0.5
 --- !u!95 &2114564428
 Animator:
   serializedVersion: 4
@@ -1217,6 +1223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c91bb8c49b1339a4a8dce7b5fd150b75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  firingPoint: {fileID: 0}
   WeaponName: Basic Gun
   description: first created, amoung all of the weapons
   weaponType: 1
