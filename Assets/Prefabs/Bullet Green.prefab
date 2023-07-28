@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7067255268889861162}
   - component: {fileID: 7067255268889861163}
   m_Layer: 0
-  m_Name: Bullet MultiTab
+  m_Name: Bullet Green
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BasicGunInstance : WeaponInstance
+public class BasicGunInstance : RangedWeaponInstance
 {
 
     [SerializeField] private GameObject bulletPrefab;
