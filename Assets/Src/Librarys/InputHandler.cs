@@ -7,7 +7,9 @@ using UnityEngine.InputSystem.Interactions;
 
 public class InputHandler
 {
-    private Time lastTabTime;
+    private static float lastTabTime = 0;
+    private static int TabCount = 0;
+    private static float TabSpaceping = 0.3f;
 
     public static AttackInput StartedAttackInput(InputAction.CallbackContext input)
     {
@@ -23,7 +25,15 @@ public class InputHandler
     {
         if (input.interaction is TapInteraction)
         {
-            return AttackInput.Tab;
+            if ((TabCount >= 1) & (Time.time <= lastTabTime + TabSpaceping))
+            {
+                return MultiTab();
+            }
+
+            else
+            {
+                return Tab();
+            }
         }
         
         if (input.interaction is SlowTapInteraction)
@@ -40,5 +50,20 @@ public class InputHandler
     public static AttackInput CancelledAttackInput(InputAction.CallbackContext input)
     {        
         return AttackInput.Empty;
+    }
+
+
+    private static AttackInput Tab()
+    {
+        TabCount++;
+        lastTabTime = Time.time;
+        return AttackInput.Tab;
+    }
+
+    private static AttackInput MultiTab()
+    {
+        TabCount = 0;
+        lastTabTime = Time.time;
+        return AttackInput.MultiTab;
     }
 }
