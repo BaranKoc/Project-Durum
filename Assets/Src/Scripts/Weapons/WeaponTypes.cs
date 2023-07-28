@@ -6,7 +6,8 @@ public enum WeaponType
 {
     Melee,
     Ranged,
-    Shield
+    Shield,
+    Empty
 }
 
 public enum GripType
