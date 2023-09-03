@@ -6,19 +6,17 @@ public class InventoryComponent : MonoBehaviour
 {
     /* 
     TODO: 
-        * public void ChangeWeapon(float index, GameObject _SecondaryWeapon){}
-
-        * This will be need for pick up items 
+        * code functions to change items
     */
 
     private PlayerCtrl playerCtrl;
 
-    public GameObject PrimaryWeapon;
-    [HideInInspector] public WeaponComponent PrimaryWeaponComponent;
-
-    public GameObject SecondaryWeapon;
-    [HideInInspector] public WeaponComponent SecondaryWeaponComponent;
+    public GameObject RangedWeapon;
+    [HideInInspector] public RangedWeaponComponent rangedWeaponComponent;
     
+    public GameObject MeleeWeapon;
+    [HideInInspector] public MeleeWeaponComponent meleeWeaponComponent;
+
 
     public void init(PlayerCtrl _playerCtrl)
     {
@@ -26,31 +24,28 @@ public class InventoryComponent : MonoBehaviour
     }
 
 
-    private void getPrimaryWeapon()
+    private void getRangedWeapon()
     {
-        PrimaryWeaponComponent = PrimaryWeapon.GetComponent<WeaponComponent>();
-        PrimaryWeaponComponent.init(playerCtrl);
+        rangedWeaponComponent = RangedWeapon.GetComponent<RangedWeaponComponent>();
+        rangedWeaponComponent.init(playerCtrl);
     }    
-    public void UpdatePrimaryWeapon()
+    public void UpdateRangedWeapon()
     {
-        getPrimaryWeapon();
-        playerCtrl.setPrimaryWeapon(PrimaryWeaponComponent, PrimaryWeaponComponent.weaponInstance);
+        getRangedWeapon();
+        playerCtrl.setRangedWeapon(rangedWeaponComponent, rangedWeaponComponent.weaponInstance);
     }
 
 
-    private void getSecondaryWeapon()
+    private void getMeleeWeapon()
     {
-        PrimaryWeaponComponent = PrimaryWeapon.GetComponent<WeaponComponent>();
-        PrimaryWeaponComponent.init(playerCtrl);
+        meleeWeaponComponent = MeleeWeapon.GetComponent<MeleeWeaponComponent>();
+        meleeWeaponComponent.init(playerCtrl);
     }
-    public void UpdateSecondaryWeapon()
+    public void UpdateMeleeWeapon()
     {
-        getSecondaryWeapon();
-        playerCtrl.setSecondaryWeapon(SecondaryWeaponComponent, SecondaryWeaponComponent.weaponInstance);
+        getMeleeWeapon();
+        playerCtrl.setMeleeWeapon(meleeWeaponComponent, meleeWeaponComponent.weaponInstance);
     }
-
-
-
 
     
 }

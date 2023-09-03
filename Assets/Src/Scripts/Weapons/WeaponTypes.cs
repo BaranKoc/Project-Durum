@@ -6,12 +6,5 @@ public enum WeaponType
 {
     Melee,
     Ranged,
-    Shield,
     Empty
-}
-
-public enum GripType
-{
-    SingleHanded,
-    TwoHanded
 }

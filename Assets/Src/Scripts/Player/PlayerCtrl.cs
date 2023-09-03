@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -10,7 +11,6 @@ public class PlayerCtrl : MonoBehaviour
 {
     // Components
     private Rigidbody2D rb;
-    private TrailRenderer tr;
 
     private PlayerData playerData;
 
@@ -20,17 +20,14 @@ public class PlayerCtrl : MonoBehaviour
 
     public Transform firingPoint;
 
-
     private GameObject InventoryGameObject;
     private InventoryComponent Inventory;
     
-    [HideInInspector] public WeaponComponent PrimaryWeaponComponent;
-    [HideInInspector] public WeaponInstance PrimaryWeaponInstance;
-
-    [HideInInspector] public WeaponComponent SecondaryWeaponComponent;
-    [HideInInspector] public WeaponInstance SecondaryWeaponInstance;
+    [HideInInspector] public RangedWeaponComponent rangedWeaponComponent;
+    [HideInInspector] public RangedWeaponInstance rangedWeaponInstance;
     
-
+    [HideInInspector] public MeleeWeaponComponent meleeWeaponComponent;
+    [HideInInspector] public MeleeWeaponInstance meleeWeaponInstance;
 
     //================================================================
     /*´:°•.°+.*•´.*:˚.°*.˚•´.°:°•.°•.*•´.*:˚.°*.˚•´.°:°•.°+.*•´.*:*/
@@ -40,7 +37,6 @@ public class PlayerCtrl : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        tr = GetComponent<TrailRenderer>();
 
         playerData = GetComponent<PlayerData>();
 
@@ -48,13 +44,12 @@ public class PlayerCtrl : MonoBehaviour
 
         playerInputActions = new PlayerInputActions();
 
-
         InventoryGameObject = transform.Find("Inventory").gameObject; 
         Inventory = InventoryGameObject.GetComponent<InventoryComponent>();
         
         Inventory.init(this);
-        Inventory.UpdatePrimaryWeapon();
-        Inventory.UpdateSecondaryWeapon();
+        Inventory.UpdateRangedWeapon();
+        Inventory.UpdateMeleeWeapon();
     }
 
     private void OnEnable()
@@ -67,9 +62,13 @@ public class PlayerCtrl : MonoBehaviour
         playerInputActions.Player.Dash.performed += PerformedDash;
         playerInputActions.Player.Dash.canceled += CancelledDash;
 
-        playerInputActions.Player.PrimaryWeapon.started += PrimaryWeaponStarted;
-        playerInputActions.Player.PrimaryWeapon.performed += PrimaryWeaponPerformed;
-        playerInputActions.Player.PrimaryWeapon.canceled += PrimaryWeaponCancelled;
+        playerInputActions.Player.Aim.started += AimInputStarted;
+        playerInputActions.Player.Aim.performed += AimInputPerformed;
+        playerInputActions.Player.Aim.canceled += AimInputCancelled;
+
+        playerInputActions.Player.Attack.started += AttackInputStarted;
+        playerInputActions.Player.Attack.performed += AttackInputPerformed;
+        playerInputActions.Player.Attack.canceled += AttackInputCancelled;
     }
 
     private void OnDisable()
@@ -82,9 +81,13 @@ public class PlayerCtrl : MonoBehaviour
         playerInputActions.Player.Dash.performed -= PerformedDash;
         playerInputActions.Player.Dash.canceled -= CancelledDash;
         
-        playerInputActions.Player.PrimaryWeapon.started -= PrimaryWeaponStarted;
-        playerInputActions.Player.PrimaryWeapon.performed -= PrimaryWeaponPerformed;
-        playerInputActions.Player.PrimaryWeapon.canceled -= PrimaryWeaponCancelled;
+        playerInputActions.Player.Aim.started -= AimInputStarted;
+        playerInputActions.Player.Aim.performed -= AimInputPerformed;
+        playerInputActions.Player.Aim.canceled -= AimInputCancelled;
+
+        playerInputActions.Player.Attack.started -= AttackInputStarted;
+        playerInputActions.Player.Attack.performed -= AttackInputPerformed;
+        playerInputActions.Player.Attack.canceled -= AttackInputCancelled;
     }
 
 
@@ -98,6 +101,40 @@ public class PlayerCtrl : MonoBehaviour
     //================================================================
     private void Update() 
     { 
+        // Aim...
+        if (taking_aim) { rangedWeaponInstance.Aim(); }
+        else { rangedWeaponInstance.AimInputCancelled(); }
+
+
+        // Attack...
+        switch (current_attack_input)
+        {
+            case AttackInput.Empty:
+                rangedWeaponInstance.ShootInputCancelled();
+                meleeWeaponInstance.MeleeAttackInputCancelled();
+                break;
+            
+            case AttackInput.Melee:
+                meleeWeaponInstance.MeleeAttack();
+                break;
+
+            case AttackInput.Shoot:
+                rangedWeaponInstance.Shoot();
+                break;
+        }
+
+
+        // Animations...
+
+        if (is_dashing)
+        {
+            // Animate Dash
+        }
+        
+        if (is_walking)
+        {
+            // Animate Movement
+        }
     }
 
     private void FixedUpdate()
@@ -105,7 +142,6 @@ public class PlayerCtrl : MonoBehaviour
         if (PlayerLibrary.CanDash(this))
         {
             StartCoroutine(dash());
-            // Animate Dash
         }
 
         if (PlayerLibrary.CanMove(this))
@@ -113,7 +149,6 @@ public class PlayerCtrl : MonoBehaviour
             SetPlayerVelocity();
             UpdateIsWalking();
             RotateInDirection(_movementInput); 
-            // Animate Movement
         }
     }
 
@@ -127,7 +162,7 @@ public class PlayerCtrl : MonoBehaviour
     //================================================================
 
     [HideInInspector] public Vector2 _movementInput;
-    [HideInInspector] public bool is_walking;
+    [HideInInspector] public bool is_walking = false;
     
     private void PerformedMovement(InputAction.CallbackContext input)
     {
@@ -137,7 +172,14 @@ public class PlayerCtrl : MonoBehaviour
 
     private void CancelledMovement(InputAction.CallbackContext input)
     {
+        stopWalking();
+    }
+
+    [HideInInspector] 
+    public void stopWalking()
+    {
         _movementInput = Vector2.zero;
+        is_walking = false;
         rb.velocity = Vector2.zero;
     }
 
@@ -147,6 +189,15 @@ public class PlayerCtrl : MonoBehaviour
         rb.velocity = _movementInput * playerData.CURRENT_MovementSpeed;
     }
 
+    private void UpdateIsWalking()
+    {
+        if (_movementInput != Vector2.zero && rb.velocity != Vector2.zero)
+        { is_walking = true; }
+
+        else if (_movementInput == Vector2.zero || rb.velocity == Vector2.zero)
+        { is_walking = false; }
+    }
+
     private void RotateInDirection(Vector2 vector)
     {
         if (is_walking)
@@ -154,15 +205,6 @@ public class PlayerCtrl : MonoBehaviour
             float angle = Mathf.Atan2(vector.y, vector.x) * Mathf.Rad2Deg;
             rb.rotation = angle;
         }
-    }
-
-    private void UpdateIsWalking()
-    {
-        if (_movementInput != Vector2.zero)
-        { is_walking = true; }
-
-        else if (_movementInput == Vector2.zero)
-        { is_walking = false; }
     }
 
 
@@ -175,44 +217,48 @@ public class PlayerCtrl : MonoBehaviour
     //================================================================
 
     [HideInInspector] public Vector2 direction_dash;
+
+    [HideInInspector] public bool request_dash = false;
+    [HideInInspector] public bool request_ChainDash = false;
+    [HideInInspector] public bool request_HoverDash = false;
+    
     [HideInInspector] public bool is_dashing = false;
-    [HideInInspector] public bool can_dash = true;
+    [HideInInspector] public bool lock_dash = false;
 
 
     private void PerformedDash(InputAction.CallbackContext input)
     {
-        direction_dash = MathHelpers.DegreeToVector2(transform.rotation.eulerAngles.z);
+        request_dash = true;
     }
 
     private void CancelledDash(InputAction.CallbackContext input)
     {
-        direction_dash = Vector2.zero;
+        request_dash = false;
     }
 
 
+    private IEnumerator stopdash()
+    {
+        rb.velocity = Vector2.zero;
+        direction_dash = Vector2.zero;
+        is_dashing = false;
+
+        yield return new WaitForSeconds(playerData.CURRENT_dash_Cooldown);
+        lock_dash = false;
+    }
+
     private IEnumerator dash()
     {
-        // Force to be correct
-        direction_dash = MathHelpers.DegreeToVector2(transform.rotation.eulerAngles.z);
-
-        tr.emitting = true;
-        tr.startColor = Color.red;
         is_dashing = true;
-        can_dash = false;
+        lock_dash = true;
 
+        direction_dash = MathHelpers.DegreeToVector2(transform.rotation.eulerAngles.z);        
         rb.velocity = direction_dash.normalized * playerData.CURRENT_dash_speed * Time.deltaTime;
         //            Until This Condition
         //            🔻🔻🔻🔻🔻🔻🔻🔻  
         yield return new WaitForSeconds(playerData.CURRENT_dash_time);
         
-        rb.velocity = Vector2.zero;
-        tr.emitting = false;
-        is_dashing = false;
-        //            Until This Condition
-        //            🔻🔻🔻🔻🔻🔻🔻🔻  
-        yield return new WaitForSeconds(playerData.CURRENT_dash_Cooldown);
-
-        can_dash = true;
+        StartCoroutine(stopdash());
     }
 
 
@@ -226,123 +272,102 @@ public class PlayerCtrl : MonoBehaviour
     /*.•°:°.´+˚.*°.˚:*.´•*.+°.•°:´*.´•*.•°.•°:°.´:•˚°.*°.˚:*.´+°.•*/
     //================================================================
 
-    public void setPrimaryWeapon(WeaponComponent _WeaponComponent, WeaponInstance _WeaponInstance)
+    public void setRangedWeapon(RangedWeaponComponent _WeaponComponent, RangedWeaponInstance _WeaponInstance)
     {
-        PrimaryWeaponComponent = _WeaponComponent;
-        PrimaryWeaponInstance = _WeaponInstance;
+        rangedWeaponComponent = _WeaponComponent;
+        rangedWeaponInstance = _WeaponInstance;
     }
 
-
-    public void setSecondaryWeapon(WeaponComponent _WeaponComponent, WeaponInstance _WeaponInstance)
+    public void setMeleeWeapon(MeleeWeaponComponent _WeaponComponent, MeleeWeaponInstance _WeaponInstance)
     {
-        SecondaryWeaponComponent = _WeaponComponent;
-        SecondaryWeaponInstance = _WeaponInstance;
+        meleeWeaponComponent = _WeaponComponent;
+        meleeWeaponInstance = _WeaponInstance;
     }
-
-
 
 
 
     //================================================================
     /*´:°•.°+.*•´.*:˚.°*.˚•´.°:°•.°•.*•´.*:˚.°*.˚•´.°:°•.°+.*•´.*:*/
-    /*                       PRIMARY WEAPON                       */
+    /*                       Attack Input                         */
     /*.•°:°.´+˚.*°.˚:*.´•*.+°.•°:´*.´•*.•°.•°:°.´:•˚°.*°.˚:*.´+°.•*/
     //================================================================
+    private AttackInput current_attack_input = AttackInput.Empty;
+    private bool taking_aim = false;
 
-    private void PrimaryWeaponStarted(InputAction.CallbackContext input)
+    private void AttackInputStarted(InputAction.CallbackContext input)
     {
-        switch (InputHandler.StartedAttackInput(input))
-        {
+        switch (InputHandler.StartedAttackInput(input,taking_aim))
+        { 
             case AttackInput.Empty:
+                current_attack_input = AttackInput.Empty;
                 break;
             
-            case AttackInput.Press:
-                PrimaryWeaponInstance.whenPress();
+            case AttackInput.Melee:
+                current_attack_input = AttackInput.Melee;
                 break;
 
-            case AttackInput.Tab:
-                PrimaryWeaponInstance.whenTab();
-                break;
-
-            case AttackInput.MultiTab:
-                PrimaryWeaponInstance.whenMultiTab();
-                break;
-            
-            case AttackInput.SlowTab:
-                PrimaryWeaponInstance.whenSlowTab();
-                break;
-            
-            case AttackInput.Hold:
-                PrimaryWeaponInstance.whenHold();
+            case AttackInput.Shoot:
+                current_attack_input = AttackInput.Shoot;
                 break;
         }
     }
 
-    private void PrimaryWeaponPerformed(InputAction.CallbackContext input)
+    private void AttackInputPerformed(InputAction.CallbackContext input)
     {
-        switch (InputHandler.PerformedAttackInput(input))
-        {
+        switch (InputHandler.PerformedAttackInput(input,taking_aim))
+        { 
             case AttackInput.Empty:
+            current_attack_input = AttackInput.Empty;
                 break;
             
-            case AttackInput.Press:
-                PrimaryWeaponInstance.whenPress();
+            case AttackInput.Melee:
+                current_attack_input = AttackInput.Melee;
                 break;
 
-            case AttackInput.Tab:
-                PrimaryWeaponInstance.whenTab();
-                break;
-
-            case AttackInput.MultiTab:
-                PrimaryWeaponInstance.whenMultiTab();
-                break;
-            
-            case AttackInput.SlowTab:
-                PrimaryWeaponInstance.whenSlowTab();
-                break;
-            
-            case AttackInput.Hold:
-                PrimaryWeaponInstance.whenHold();
+            case AttackInput.Shoot:
+                current_attack_input = AttackInput.Shoot;
                 break;
         }
     }
 
-    private void PrimaryWeaponCancelled(InputAction.CallbackContext input)
+    private void AttackInputCancelled(InputAction.CallbackContext input)
     {
         switch (InputHandler.CancelledAttackInput(input))
-        {
+        { 
             case AttackInput.Empty:
+            current_attack_input = AttackInput.Empty;
                 break;
             
-            case AttackInput.Press:
-                PrimaryWeaponInstance.whenPress();
+            case AttackInput.Melee:
+                current_attack_input = AttackInput.Melee;
                 break;
 
-            case AttackInput.Tab:
-                PrimaryWeaponInstance.whenTab();
-                break;
-
-            case AttackInput.MultiTab:
-                PrimaryWeaponInstance.whenMultiTab();
-                break;
-            
-            case AttackInput.SlowTab:
-                PrimaryWeaponInstance.whenSlowTab();
-                break;
-            
-            case AttackInput.Hold:
-                PrimaryWeaponInstance.whenHold();
+            case AttackInput.Shoot:
+                current_attack_input = AttackInput.Shoot;
                 break;
         }
     }
 
 
-    
-    //================================================================
-    /*´:°•.°+.*•´.*:˚.°*.˚•´.°:°•.°•.*•´.*:˚.°*.˚•´.°:°•.°+.*•´.*:*/
-    /*                       ATTACK2 FIELD                        */
-    /*.•°:°.´+˚.*°.˚:*.´•*.+°.•°:´*.´•*.•°.•°:°.´:•˚°.*°.˚:*.´+°.•*/
-    //================================================================
+    private void AimInputStarted(InputAction.CallbackContext input)
+    {
+        if (InputHandler.StartedAimInput(input)) { taking_aim = true; }
+        else { taking_aim = false; }
+    }
+
+    private void AimInputPerformed(InputAction.CallbackContext input)
+    {
+        if (InputHandler.PerformedAimInput(input)) { taking_aim = true; }
+        else { taking_aim = false; }
+    }
+
+    private void AimInputCancelled(InputAction.CallbackContext input)
+    {
+        if (InputHandler.CancelledAimInput(input)) { taking_aim = true; }
+        else { taking_aim = false; }
+    }
+
+
+}
 
     
-}

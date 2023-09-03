@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MeleeWeaponInstance : WeaponInstance
+public abstract class MeleeWeaponInstance : WeaponInstance, IMeleeWeaponInstance
 {
+    public abstract void MeleeAttack();
+    public abstract void MeleeAttackInputCancelled();
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 
-public class WeaponComponent : MonoBehaviour
+public class RangedWeaponComponent : MonoBehaviour
 {
     private PlayerCtrl playerCtrl;
 
@@ -12,15 +12,14 @@ public class WeaponComponent : MonoBehaviour
     private GameObject baseGameObject;
     private GameObject spritesGameObject;
 
-    public WeaponData weaponData;
-    public WeaponInstance weaponInstance;
+    public RangedWeaponData weaponData;
+    public RangedWeaponInstance weaponInstance;
 
 
     public void init(PlayerCtrl _playerCtrl)
     {
         playerCtrl = _playerCtrl;
         weaponInstance.init(playerCtrl);
-
 
         baseGameObject = transform.Find("Base").gameObject;
         spritesGameObject = transform.Find("Sprites").gameObject;

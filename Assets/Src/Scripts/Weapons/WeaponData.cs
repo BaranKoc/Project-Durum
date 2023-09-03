@@ -12,5 +12,4 @@ public class WeaponData : MonoBehaviour
     public string description;
 
     public WeaponType weaponType;
-    public GripType gripType;
 }

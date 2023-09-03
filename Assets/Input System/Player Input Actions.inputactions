@@ -24,21 +24,21 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "PrimaryWeapon",
+                    "name": "Attack",
                     "type": "Button",
                     "id": "f6ba3b67-86ff-4972-96c5-635c95381869",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Tap,SlowTap(duration=0.2)",
+                    "interactions": "Tap,Hold",
                     "initialStateCheck": true
                 },
                 {
-                    "name": "SecondaryWeapon",
+                    "name": "Aim",
                     "type": "Button",
                     "id": "06b7310c-86ad-4576-9211-5c108be94d62",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "MultiTap,SlowTap,Tap",
+                    "interactions": "Hold",
                     "initialStateCheck": false
                 }
             ],
@@ -116,7 +116,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "PrimaryWeapon",
+                    "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -127,7 +127,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SecondaryWeapon",
+                    "action": "Aim",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
